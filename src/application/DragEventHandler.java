@@ -1,7 +1,9 @@
 package application;
 
 import java.io.IOException;
+import java.util.List;
 
+import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.input.DragEvent;
 import javafx.scene.input.Dragboard;
@@ -12,10 +14,10 @@ public class DragEventHandler {
 		//adds handler for drag/move labels in vboxes 
 	public static void setOnDragOver(DragEvent event){
 		VBox vbox = (VBox) event.getSource();
-		if (( event).getGestureSource() != vbox &&
-                (event).getDragboard().hasString()) {
+		if (( event).getGestureSource() != vbox && (event).getDragboard().hasString()) {
 
             event.acceptTransferModes(TransferMode.MOVE);
+            
         }
 
         event.consume();
@@ -28,6 +30,7 @@ public class DragEventHandler {
         if (db.hasString()) {
 			vbox.getChildren().add(label);
         	FileHandler.setList(event, label);
+            
         	success = true;
         }
         

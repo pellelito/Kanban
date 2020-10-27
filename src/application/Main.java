@@ -11,8 +11,11 @@ import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.stage.Stage;
 import javafx.scene.Scene;
+import javafx.scene.SnapshotParameters;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.DragEvent;
 import javafx.scene.input.Dragboard;
@@ -29,62 +32,68 @@ import javafx.scene.paint.Color;
 
 
 public class Main extends Application {
-	VBox meny = new VBox(5);
+		//get screen size and make app fullscreen
+	static GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
+	static int width = gd.getDisplayMode().getWidth();
+	static int height = gd.getDisplayMode().getHeight();
+		
+		//creates boxes to work with
+	static VBox meny = new VBox(5);
 	static VBox backlog = new VBox(5);
 	static VBox todo = new VBox(5);
 	static VBox doing = new VBox(5);
 	static VBox done = new VBox(5);
 	
+	
 	@Override
 	public void start(Stage primaryStage) throws IOException {
-		GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
-		int width = gd.getDisplayMode().getWidth();
-		int height = gd.getDisplayMode().getHeight();
-		
+			
+			//sets new scene
 		Pane root = new Pane();
 		Scene scene = new Scene(root, width, height);
 		Button addNew = new Button("Add new");
 		Button close = new Button("Close");
-		root.setStyle("-fx-background-size: cover;");
-		
-		
+
 		try {
-				//create form___________________________________________________________________________________________________________________________
+				//Build UI___________________________________________________________________________________________________________________________
 			
 			scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 			
 			HBox frame = new HBox(50);
-			
-			
+	
 			meny.setMinHeight(height);
 			meny.setMinWidth(width/6);
+			meny.setMaxWidth(width/6);
 			meny.setBackground(new Background(new BackgroundFill(Color.rgb(120, 120, 120), CornerRadii.EMPTY, null)));
-			
-			
+	
 			backlog.setMinHeight(height);
 			backlog.setMinWidth(width/6);
+			backlog.setMaxWidth(width/6);
 			backlog.setBackground(new Background(new BackgroundFill(Color.rgb(255, 204, 204), new CornerRadii(20), null)));
-			
-			
+				
 			todo.setMinHeight(height);
 			todo.setMinWidth(width/6);
+			todo.setMaxWidth(width/6);
 			todo.setBackground(new Background(new BackgroundFill(Color.rgb(255, 255, 204), new CornerRadii(20), null)));
-			
-			
-			
+		
 			doing.setMinHeight(height);
 			doing.setMinWidth(width/6);
+			doing.setMaxWidth(width/6);
 			doing.setBackground(new Background(new BackgroundFill(Color.rgb(204, 229, 255), new CornerRadii(20), null)));
-			
 			
 			done.setMinHeight(height);
 			done.setMinWidth(width/6);
+			done.setMaxWidth(width/6);
 			done.setBackground(new Background(new BackgroundFill(Color.rgb(204, 204, 255), new CornerRadii(20), null)));
 			
 			Label lblBacklog = new Label("Backlog");
+			lblBacklog.setStyle("-fx-font-weight: bold; -fx-font-size: 16px; -fx-padding: 20px;	");
 			Label lblTodo = new Label("Todo");
+			lblTodo.setStyle("-fx-font-weight: bold; -fx-font-size: 16px; -fx-padding: 20px;");
 			Label lblDoing = new Label("Doing");
+			lblDoing.setStyle("-fx-font-weight: bold; -fx-font-size: 16px; -fx-padding: 20px;");
 			Label lblDone = new Label("Done");
+			lblDone.setStyle("-fx-font-weight: bold; -fx-font-size: 16px; -fx-padding: 20px;");
 			
 			backlog.getChildren().add(lblBacklog);
 			backlog.setAlignment(Pos.TOP_CENTER);
@@ -98,9 +107,19 @@ public class Main extends Application {
 			done.getChildren().add(lblDone);
 			done.setAlignment(Pos.TOP_CENTER);
 			done.setId("Done");
-		
-			meny.getChildren().addAll(addNew, close);
-			meny.setAlignment(Pos.CENTER);
+			
+					//Creating a Label for log
+		      Label lblLogo = new Label("");
+					//Creating a graphic (image)
+		      Image img = new Image("img/logo.png");
+		      ImageView view = new ImageView(img);
+		      view.setFitHeight(100);
+		      view.setPreserveRatio(true);
+		      lblLogo.setGraphic(view);
+		      lblLogo.setStyle("-fx-padding: 60px;");
+		      
+			meny.getChildren().addAll(lblLogo, addNew, close);
+			meny.setAlignment(Pos.TOP_CENTER);
 			frame.getChildren().addAll(meny, backlog, todo, doing, done);
 			root.getChildren().add(frame);
 			
@@ -111,7 +130,7 @@ public class Main extends Application {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-			//end form__________________________________________________________________________________________________________________
+			//end building UI __________________________________________________________________________________________________________________
 			
 			//get tasks from file
 		try {
@@ -125,9 +144,10 @@ public class Main extends Application {
 		    public void handle(DragEvent event) {
 
 		    	DragEventHandler.setOnDragOver(event);
+		    	
 		    }
 		});
-
+		
 		backlog.setOnDragDropped(new EventHandler<DragEvent>() {
 		    public void handle(DragEvent event) {
 
@@ -209,17 +229,21 @@ public class Main extends Application {
         
 			//Creates new label and adds click event
 		Label lblTask = new Label(title + "\n" + text);
-    	
+		lblTask.setWrapText(true);
+		lblTask.setStyle("-fx-background-color: rgb(200,200,200,0.5);-fx-padding: 10px; -fx-background-radius: 5 5 5 5;"); 
+		lblTask.setMinWidth(width/7);
+		lblTask.setMaxWidth(width/7);
     	lblTask.setOnDragDetected(new EventHandler<MouseEvent>() {
     	    public void handle(MouseEvent event) {
     	        	// drag detected
+    	    	final ImageView preview = new ImageView(lblTask.snapshot(null, null));
     	        Dragboard db = lblTask.startDragAndDrop(TransferMode.ANY);
 
     	        	// add string to dragboard, must have something for drag to start
     	        ClipboardContent content = new ClipboardContent();
     	        content.putString(lblTask.getText());
     	        db.setContent(content);
-
+    	        db.setDragView(preview.getImage());
     	        event.consume();
     	    }
     	});

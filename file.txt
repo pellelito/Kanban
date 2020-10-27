@@ -1,3 +1,4 @@
-Något nytt##Martina fixar##Backlog
-Pelle##Rockar##Doing
-Gå på intervju##Tjolabaloo##Done
+Pelle##Rockar##Backlog
+Pelles##Något##Done
+Något nytt##Pelle fixar biffen##Todo
+Ge Pelle VG!##Marcus fixar##Todo
