@@ -34,8 +34,8 @@ import javafx.scene.paint.Color;
 public class Main extends Application {
 		//get screen size and make app fullscreen
 	static GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
-	static int width = gd.getDisplayMode().getWidth();
-	static int height = gd.getDisplayMode().getHeight();
+	static int width = gd.getDisplayMode().getWidth()/2;
+	static int height = gd.getDisplayMode().getHeight()/2;
 		
 		//creates boxes to work with
 	static VBox meny = new VBox(5);
@@ -51,49 +51,49 @@ public class Main extends Application {
 			//sets new scene
 		Pane root = new Pane();
 		Scene scene = new Scene(root, width, height);
+		
 		Button addNew = new Button("Add new");
 		Button close = new Button("Close");
-
+		addNew.prefWidthProperty().bind(root.widthProperty());
+		close.prefWidthProperty().bind(root.widthProperty());
+		
 		try {
 				//Build UI___________________________________________________________________________________________________________________________
 			
 			scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 			
 			HBox frame = new HBox(50);
-	
-			meny.setMinHeight(height);
-			meny.setMinWidth(width/6);
-			meny.setMaxWidth(width/6);
+			frame.prefWidthProperty().bind(root.widthProperty());
+			frame.prefHeightProperty().bind(root.heightProperty());
+
+			meny.prefWidthProperty().bind(root.widthProperty());
+			meny.prefHeightProperty().bind(root.heightProperty());
 			meny.setBackground(new Background(new BackgroundFill(Color.rgb(120, 120, 120), CornerRadii.EMPTY, null)));
 	
-			backlog.setMinHeight(height);
-			backlog.setMinWidth(width/6);
-			backlog.setMaxWidth(width/6);
+			backlog.prefWidthProperty().bind(root.widthProperty());
+			backlog.prefHeightProperty().bind(root.heightProperty());
 			backlog.setBackground(new Background(new BackgroundFill(Color.rgb(255, 204, 204), new CornerRadii(20), null)));
-				
-			todo.setMinHeight(height);
-			todo.setMinWidth(width/6);
-			todo.setMaxWidth(width/6);
+
+			todo.prefWidthProperty().bind(root.widthProperty());
+			todo.prefHeightProperty().bind(root.heightProperty());
 			todo.setBackground(new Background(new BackgroundFill(Color.rgb(255, 255, 204), new CornerRadii(20), null)));
 		
-			doing.setMinHeight(height);
-			doing.setMinWidth(width/6);
-			doing.setMaxWidth(width/6);
+			doing.prefWidthProperty().bind(root.widthProperty());
+			doing.prefHeightProperty().bind(root.heightProperty());
 			doing.setBackground(new Background(new BackgroundFill(Color.rgb(204, 229, 255), new CornerRadii(20), null)));
-			
-			done.setMinHeight(height);
-			done.setMinWidth(width/6);
-			done.setMaxWidth(width/6);
+
+			done.prefWidthProperty().bind(root.widthProperty());
+			done.prefHeightProperty().bind(root.heightProperty());
 			done.setBackground(new Background(new BackgroundFill(Color.rgb(204, 204, 255), new CornerRadii(20), null)));
 			
 			Label lblBacklog = new Label("Backlog");
-			lblBacklog.setStyle("-fx-font-weight: bold; -fx-font-size: 16px; -fx-padding: 20px;	");
+			lblBacklog.setStyle("-fx-font-weight: bold; -fx-text-fill: black; -fx-font-size: 16px; -fx-padding: 20px;	");
 			Label lblTodo = new Label("Todo");
-			lblTodo.setStyle("-fx-font-weight: bold; -fx-font-size: 16px; -fx-padding: 20px;");
+			lblTodo.setStyle("-fx-font-weight: bold; -fx-text-fill: black; -fx-font-size: 16px; -fx-padding: 20px;");
 			Label lblDoing = new Label("Doing");
-			lblDoing.setStyle("-fx-font-weight: bold; -fx-font-size: 16px; -fx-padding: 20px;");
+			lblDoing.setStyle("-fx-font-weight: bold; -fx-text-fill: black; -fx-font-size: 16px; -fx-padding: 20px;");
 			Label lblDone = new Label("Done");
-			lblDone.setStyle("-fx-font-weight: bold; -fx-font-size: 16px; -fx-padding: 20px;");
+			lblDone.setStyle("-fx-font-weight: bold;-fx-text-fill: black;  -fx-font-size: 16px; -fx-padding: 20px;");
 			
 			backlog.getChildren().add(lblBacklog);
 			backlog.setAlignment(Pos.TOP_CENTER);
@@ -116,20 +116,26 @@ public class Main extends Application {
 		      view.setFitHeight(100);
 		      view.setPreserveRatio(true);
 		      lblLogo.setGraphic(view);
-		      lblLogo.setStyle("-fx-padding: 60px;");
+		      lblLogo.setStyle("-fx-padding: 60px 0 60px 0;");
 		      
 			meny.getChildren().addAll(lblLogo, addNew, close);
 			meny.setAlignment(Pos.TOP_CENTER);
+		
 			frame.getChildren().addAll(meny, backlog, todo, doing, done);
+		
 			root.getChildren().add(frame);
 			
 			primaryStage.setScene(scene);
+			
+			primaryStage.setResizable(true);
 			primaryStage.show();
 		
 		
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		
+        
 			//end building UI __________________________________________________________________________________________________________________
 			
 			//get tasks from file
@@ -230,9 +236,9 @@ public class Main extends Application {
 			//Creates new label and adds click event
 		Label lblTask = new Label(title + "\n" + text);
 		lblTask.setWrapText(true);
-		lblTask.setStyle("-fx-background-color: rgb(200,200,200,0.5);-fx-padding: 10px; -fx-background-radius: 5 5 5 5;"); 
-		lblTask.setMinWidth(width/7);
-		lblTask.setMaxWidth(width/7);
+		lblTask.setStyle("-fx-background-color: rgb(30,30,30,0.5);-fx-padding: 10px; -fx-background-radius: 5 5 5 5;"); 
+		lblTask.setMaxWidth(width);
+		//lblTask.setMaxWidth(width/7);
     	lblTask.setOnDragDetected(new EventHandler<MouseEvent>() {
     	    public void handle(MouseEvent event) {
     	        	// drag detected

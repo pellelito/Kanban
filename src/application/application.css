@@ -1,13 +1,17 @@
 .button {
-  -fx-background-color: #f0f0f0;
-  -fx-pref-width: 100px;
+  -fx-background-color: #686256;
   -fx-border: none;
-  -fx-color: white;
+  -fx-text-fill: white;
   -fx-padding: 15px 15px;
+  -fx-margin: 15px;
   -fx-text-align: center;
   -fx-text-decoration: none;
   -fx-display: inline-block;
   -fx-font-size: 14px;
   -fx-margin: 4px 2px;
   -fx-cursor: pointer;
+}
+
+.label{
+	-fx-text-fill: white;
 }
