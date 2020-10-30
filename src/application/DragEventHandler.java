@@ -58,6 +58,7 @@ public class DragEventHandler {
                 }
                 vbox.getChildren().clear();
                 vbox.getChildren().addAll(nodes);
+                FileHandler.setNewOrder(nodes);
                 success = true;
         	}
         	
