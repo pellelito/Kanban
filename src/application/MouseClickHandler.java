@@ -43,7 +43,9 @@ public class MouseClickHandler implements EventHandler<Event>{
         String parent = lblTask.getParent().getId();
 
         	//updates task as new task and removes the old one
-        CreateTask.addNewTask(lines[0],lines[1],parent);
+        
+        if (lines.length<2) CreateTask.addNewTask(lines[0],"",parent);
+        else CreateTask.addNewTask(lines[0],lines[1],parent);
         FileHandler.removeTask(event);
         
 	}

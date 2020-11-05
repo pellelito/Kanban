@@ -35,7 +35,12 @@ public class FileHandler {
 
 					//creates tasks
 				String[] attributes = line.split("##");		
-				addTask(attributes[0], attributes[1], attributes[2]);
+				//addTask(attributes[0], attributes[1], attributes[2]);
+				if (attributes.length==3) {
+					addTask(attributes[0].replace("--./=f-./", "#"),
+					attributes[1].replace("--./=f-./", "#"),
+					attributes[2]);
+					}
 
 				line = br.readLine(); 
 				
@@ -51,7 +56,8 @@ public class FileHandler {
 		tasks.forEach((n) -> {
 					
 		try {
-			writer.write(n.getTitle() +"##" + n.getText() + "##" + n.getList() +"\n");
+			writer.write(n.getTitle().replace("#", "--./=f-./") +"##" +
+					n.getText().replace("#", "--./=f-./") + "##" + n.getList() +"\n");
 			
 		} catch (IOException e) {
 			e.printStackTrace();

@@ -20,7 +20,7 @@ import javafx.stage.WindowEvent;
 
 public class CreateTask
 {
-	
+	static Stage newWindow;
 	static String list = "Backlog";
 	
 	public CreateTask(){	
@@ -76,12 +76,18 @@ public class CreateTask
     createLayout.getChildren().add(vbox);
     Scene secondScene = new Scene(createLayout, 230, 300);
 
-    	// New window (Stage)
-    Stage newWindow = new Stage();
-    newWindow.setTitle("Add/Edit task");
-    newWindow.setScene(secondScene);
-
-    newWindow.show();
+    	// New window 
+    if (newWindow == null) {
+    	newWindow = new Stage();
+    	newWindow.setTitle("Add/Edit task");
+    	newWindow.setScene(secondScene);
+    	newWindow.show();
+    	} else if (newWindow.isShowing()) {
+    	newWindow.toFront();
+    	} else {
+    	newWindow.setScene(secondScene);
+    	newWindow.show();
+    	}
     	//end of new window___________________________________________________________________________________________________________________
     
     	//what will happen whens user clicks add/update
@@ -90,16 +96,21 @@ public class CreateTask
         public void handle(ActionEvent e)
         {
         	try {	//adds/updates the new task
-        		if(!title.getText().equals("")) {
+        		if(title.getText().matches(".*\\S.*")) {
         			list = (String) comboBox.getValue();
-					FileHandler.addTask(title.getText(), text.getText(), list);
+        			if(text.getText().matches(".*\\S.*")){
+        				FileHandler.addTask(title.getText(), text.getText(), list);
+        			}else FileHandler.addTask(title.getText(), "", list);
+					
 					newWindow.close();
+					newWindow = null;
         		}else {
         				// create a alert if user not entered a title
         	        Alert a = new Alert(AlertType.ERROR); 
         	        a.setContentText("You need at least give it a title");
         	        title.setStyle("-fx-background-color: red;");
         	        a.show();
+        	        
         		}
 			} catch (IOException e1) {
 				
@@ -107,15 +118,16 @@ public class CreateTask
 			}
         }
     });
-    newWindow.addEventFilter(WindowEvent.WINDOW_CLOSE_REQUEST, event -> {
-    		//if user clicks x to close
+    newWindow.setOnCloseRequest(new EventHandler<WindowEvent>() {
+    	public void handle(WindowEvent we) {
+    	newWindow.close();
     	try {
-			FileHandler.addTask(userTitle, userText, userList);
-		} catch (IOException e1) {
-			
-			e1.printStackTrace();
-		}
-    });
+    	FileHandler.addTask(userTitle, userText, userList);
+    	} catch (IOException e1) {
+    	e1.printStackTrace();
+    	}
+    	}
+    	});
     	//closes the new window
   	btnCancel.setOnAction(e -> newWindow.close());
   	
