@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.input.DragEvent;
@@ -131,6 +132,29 @@ public class FileHandler {
 				} 
 			//updates file
 		writeToFile();
+	}
+
+	public static void setNewOrder(List<Node> nodes) throws IOException {
+			// this rewrites sorting order within the column and saves it
+		for(int i = 1; i<nodes.size();i++) {
+			Node node = nodes.get(i);
+			for(int x = 0; x<tasks.size();x++) {
+				Task task = tasks.get(x);
+				if(node.getId().equals(task.getTitle())) {
+					tasks.remove(task);
+					tasks.add(task);
+				}
+				
+			}
+			
+		}
+		
+		System.out.println("");
+			//updates file
+		writeToFile();
+
+		
+		
 	}
 	
 }

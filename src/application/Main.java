@@ -14,6 +14,7 @@ import javafx.scene.Scene;
 import javafx.scene.SnapshotParameters;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.ClipboardContent;
@@ -238,7 +239,7 @@ public class Main extends Application {
 		lblTask.setWrapText(true);
 		lblTask.setStyle("-fx-background-color: rgb(30,30,30,0.5);-fx-padding: 10px; -fx-background-radius: 5 5 5 5;"); 
 		lblTask.setMaxWidth(width);
-		//lblTask.setMaxWidth(width/7);
+		lblTask.setTooltip(new Tooltip("Right click to edit, double click to delete."));
     	lblTask.setOnDragDetected(new EventHandler<MouseEvent>() {
     	    public void handle(MouseEvent event) {
     	        	// drag detected
